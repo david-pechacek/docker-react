@@ -1,0 +1,25 @@
+version: '3'
+services:
+  web:
+    build:
+      # defines where to look in the folder structure where the docker-compose file is
+      context: .
+      # defines the docker file to use
+      dockerfile: Dockerfile.dev
+    ports:
+      # maps port 3000 outside the container to port 3000 inside the container
+      - "3000:3000"
+    volumes:
+      # same as -v in the docker command saying don't remap this in the container
+      - /app/node_modules
+      # '.' maps the current directory to what's after the colon, which is /app (the working dir in the container)
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    # overrides the default docker command
+    command: ["npm", "run", "test"]

@@ -1,0 +1,16 @@
+FROM node:alpine
+
+WORKDIR '/app'
+
+# copy the package and install dependencies
+COPY package.json .
+RUN npm install
+
+# copy everything else
+COPY . .
+
+CMD ["npm", "run", "start"]
+
+# To run: docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app 4af044a54dae
+# first -v is saying "don't remap this.  Just use the /app working directory inside the container since we don't have a node_modules folder in our directory structure
+# second -v is mapping the current project directory (with pwd shell command) to the working directory (/app)
